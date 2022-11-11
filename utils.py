@@ -30,29 +30,33 @@ def download_stock_data(tickers):
                  "directory_upgrade": True}
     chrome_opt.add_experimental_option('prefs', prefs)
     wd = webdriver.Chrome(executable_path=PATH, options=chrome_opt)
+    mainSite = wd.get("https://finance.yahoo.com/")
+    wd.find_element(By.XPATH,"//*[@id='consent-page']/div/div/div/form/div[2]/div[2]/button").click()
 
     def save_stock_data(wd, ticker):
         mainSite = wd.get("https://finance.yahoo.com/")
-        wd.find_element(By.XPATH,"//*[@id='consent-page']/div/div/div/form/div[2]/div[2]/button").click()
+        #wd.find_element(By.XPATH,"//*[@id='consent-page']/div/div/div/form/div[2]/div[2]/button").click()
         searchBox = wd.find_element(By.ID,"yfin-usr-qry")
         searchBox.send_keys("{0}".format(ticker))
         stockPg = searchBox.send_keys(Keys.RETURN)
-        time.sleep(3)
+        time.sleep(15)
+        print(ticker)
         histData = wd.find_element(By.XPATH,"//*[@id='quote-nav']/ul/li[5]/a").click()
-        time.sleep(2)
+
+        #write code to handle "A"
+        
+        time.sleep(6)
         timeSpan = wd.find_element(By.XPATH,"//*[@id='Col1-1-HistoricalDataTable-Proxy']/section/div[1]/div[1]/div[1]/div/div/div[1]/span").click()
-        time.sleep(2)
+        time.sleep(6)
         dates = wd.find_element(By.XPATH,"//*[@id='dropdown-menu']/div/div[1]/input").click()
-        time.sleep(2)
+        time.sleep(6)
         dates = wd.find_element(By.XPATH,"//*[@id='dropdown-menu']/div/ul[2]/li[3]/button/span").click()
-        time.sleep(2)
+        time.sleep(6)
         dates = wd.find_element(By.XPATH,"//*[@id='Col1-1-HistoricalDataTable-Proxy']/section/div[1]/div[2]/span[2]/a/span").click()
-        time.sleep(2)
+        time.sleep(6)
         pass
 
-    ticks = ["AAPL"]
-    
-    for tick in ticks:
+    for tick in tickers:
         if not exists("./data/{0}.csv".format(tick)): 
             save_stock_data(wd,tick)
 
@@ -65,7 +69,12 @@ def get_list_csv(dir):
     return tickers_
 
 def get_distinct_pairs(list_):
+
     output = [(a, b) for idx, a in enumerate(list_) for b in list_[idx + 1:]]
     return output
+
+def remove_futures(list_,suff):
+    filtered = filter(lambda tick: not tick.endswith(suff), list_)
+    return list(filtered)
 
 
