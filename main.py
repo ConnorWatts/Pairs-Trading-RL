@@ -13,9 +13,6 @@ def main(params):
     
     #put in utils function
     #tickers_ = get_list_csv('stock_list.csv')
-    #print(len(tickers_))
-    #tickers_ = remove_futures(tickers_,"=F")
-    #print(len(tickers_))
     tickers_ = ["AAPL","AAP","ABBV","ABMD","ABT","ACN","ADBE"]
 
     if params["download_stock_data"]: download_stock_data(tickers_)
@@ -27,19 +24,9 @@ def main(params):
         stocks.append(stock)
 
     pairs = get_distinct_pairs(stocks)
-    #print(pairs)
-
-    
-
-
-    #find and create pair objects
-
-    #get and save data as selenium
-    #create stock classes (maybe getting the data is a method in class)
-
     pass
 
 
 if __name__ == '__main__':
-    params = {"download_stock_list":False,"download_stock_data":True}
+    params = {"download_stock_list":False,"download_stock_data":False}
     main(params)
