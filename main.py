@@ -3,6 +3,10 @@ import argparse
 import data.utils as data
 import utils
 
+from utils import download_stock_list, get_list_csv, get_distinct_pairs, \
+     download_stock_data,remove_futures
+
+
 
 def main(config):
 
@@ -10,6 +14,9 @@ def main(config):
 
     # prepare data
     data.prepare_data(config)
+    tickers_ = ["AAPL","AAP","ABBV","ABMD","ABT","ACN","ADBE"]
+
+    download_stock_data(tickers_)
 
     # create stocks
     stocks = utils.get_stocks(config)
